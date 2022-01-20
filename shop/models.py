@@ -49,6 +49,20 @@ class Section(models.Model):
     def __str__(self):
         return '{0} ({1})'.format(self.title, self.section.title) #Кто я? (Боевики)
 
+    class Discount(models.Model):
+        code = models.CharField(max_length=10, verbose_name='Код купона')
+        value = models.IntegerField(
+            validators = [MinValueValidator(1), MaxValueValidator(100)],
+            help_text = 'В процентах'
+        )
+    class Meta:
+        ordering = ['-value'] #сортировка скидок, начинающаяся со скидок с самым большим наминалом
+        verbose_name = 'Скидка'
+        verbose_name_plural = 'Скидки'
+
+
+def __str__(self):
+    return self.code + ' (' + str(self.value) + '%)' #ABC (25%)
 
 
 
