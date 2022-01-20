@@ -1,3 +1,6 @@
+from datetime import datetime
+
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
 class Section(models.Model):
@@ -20,6 +23,32 @@ class Section(models.Model):
          title = models.CharField(max_length=70, verbose_name='Название')
          image = models.ImageField(upload_to='images', verbose_name='Изображение')
          price = models.DecimalField(max_length=10, decimal_places=2, verbose_name='Цена')
+         year = models.IntegerField(
+             validators=[MinValueValidator(1900), MaxValueValidator(datetime.date.today().year)],
+             verbose_name='Год')
+         )
+         country = models.CharField(max_length=70, verbose_name='Страна')
+         director = models.CharField(max_length=70, verbose_name='Режиссер')
+         play = models.IntegerField(
+              validators = [MinValueValidator(1)],
+              null=True,
+              blank=True, #blank - необязательность поля
+              verbose_name='Продолжительность',
+              help_text='В секундах'
+         )
+         # установка библиотеки Pillow: Settings -> Python Interpreter -> "+"
+         cast = models.TextField(verbose_name='В ролях')
+         description = models.TextField(verbose_name='Описание')
+         date = models.DateField(auto_now_add=True, verbose_name='Дата добавления') #auto_now_add - дата изменений в полях
+
+    class Meta:
+        ordering = ['title', '-year']
+        verbose_name = 'Товар'
+        verbose_name_plural = 'Товары'
+
+    def __str__(self):
+        return '{0} ({1})'.format(self.title, self.section.title) #Кто я? (Боевики)
+
 
 
 
