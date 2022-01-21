@@ -3,6 +3,7 @@ from datetime import datetime
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
+
 class Section(models.Model):
     title = models.CharField(
         max_length=70,
@@ -10,6 +11,7 @@ class Section(models.Model):
         unique=True,
         verbose_name='Название раздела'
     )
+
     class Meta:
      ordering = ['id']
      verbose_name = 'Раздел'
@@ -17,6 +19,7 @@ class Section(models.Model):
 
      def __str__(self):
          return self.title
+
 
 class Product(models.Model):
          sections = models.ForeignKey('Section', on_delete=models.SET_NULL, null=True, verbose_name='Раздел')
@@ -49,6 +52,7 @@ class Product(models.Model):
          def __str__(self):
             return '{0} ({1})'.format(self.title, self.section.title) #Кто я? (Боевики)
 
+
 class Discount(models.Model):
         code = models.CharField(max_length=10, verbose_name='Код купона')
         value = models.IntegerField(
@@ -62,6 +66,7 @@ class Discount(models.Model):
 
         def __str__(self):
             return self.code + ' (' + str(self.value) + '%)' #ABC (25%)
+
 
 class Order(models.Model): #Заказ
     need_delivery = models.BooleanField(verbose_name='Необходима доставка')
@@ -90,6 +95,7 @@ class Order(models.Model): #Заказ
 
     def __str__(self):
         return 'ID: ' + str(self.id)
+
 
 class OrderLine(models.Model):
     order = models.ForeignKey(Order, verbose_name = 'Заказ', on_delete = models.CASCADE)  #models.CASCADE() - удаляет все связанные объектыс ним
