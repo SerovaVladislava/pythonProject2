@@ -91,4 +91,15 @@ class Order(models.Model): #Заказ
     def __str__(self):
         return 'ID: ' + str(self.id)
 
-         
+class OrderLine(models.Model):
+    order = models.ForeignKey(Order, verbose_name = 'Заказ', on_delete = models.CASCADE)  #models.CASCADE() - удаляет все связанные объектыс ним
+    product = models.ForeignKey(Product, verbose_name = 'Товар', on_delete = models.SET_NULL, null = True) #можно удалять из списка один заказ
+    price = models.ForeignKey(max_length = 10, decimal_places = 2, verbose_name = 'Цена', default = 0) #цена за единицу товара
+    count = models.IntegerField(verbose_name = 'Количество', validators = [MinValueValidator(1)], default = 1) #кол-во товара
+
+    class Meta:
+        verbose_name = 'Строка заказа'
+        verbose_name_plural = 'Строки заказов'
+
+    def __str__(self):
+        return 'Заказ (ID {0} {1}: {2} шт.'.format(self.order.id, self.product.title, self.count)
