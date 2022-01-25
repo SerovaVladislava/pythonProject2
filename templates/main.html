@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+      <head>
+          {% block title %}<title>Интернет-магазин</title>{% endblock %}
+          <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+          {% block description %}<meta name="description"> content="Интернет-магазин по продаже DVD-дисков." />{% endblock %}
+          {% block keywords %}
+            <meta name="keywords"> content="интернет магазин, интернет магазин dvd, интернет магазин dvd диски"/>
+          {% endblock %}
+          <link rel="stylesheet" href="{% static 'styles/main.css' %}" type="text/css" />
+          <script type="text/javascript" src="{% static 'js/functions.js' %}"></script>
+          <link href="{% static 'favicon.ico' %}" rel="shortcut icon" type="image/x-icon"/>
+      </head>
+<body>
+    <div id="header">
+        <img src="{% static 'images/header.png' %}" alt="Шапка"/>
+        <div>
+            <p class="red">8-800-123-45-67</p>
+            <p class="blue">Время работы с 09:00 до 21:00<br> /> без перерыва и выходных</p>
+        </div>
+
+    </div>
+
+
+</body>

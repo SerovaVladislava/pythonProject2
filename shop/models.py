@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
@@ -25,7 +25,7 @@ class Product(models.Model):
          sections = models.ForeignKey('Section', on_delete=models.SET_NULL, null=True, verbose_name='Раздел')
          title = models.CharField(max_length=70, verbose_name='Название')
          image = models.ImageField(upload_to='images', verbose_name='Изображение')
-         price = models.DecimalField(max_length=10, decimal_places=2, verbose_name='Цена')
+         price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена')
          year = models.IntegerField(
              validators=[MinValueValidator(1900), MaxValueValidator(datetime.date.today().year)],
              verbose_name='Год'
@@ -59,6 +59,7 @@ class Discount(models.Model):
             validators = [MinValueValidator(1), MaxValueValidator(100)],
             help_text = 'В процентах'
         )
+
         class Meta:
             ordering = ['-value'] #сортировка скидок, начинающаяся со скидок с самым большим наминалом
             verbose_name = 'Скидка'
@@ -70,7 +71,7 @@ class Discount(models.Model):
 
 class Order(models.Model): #Заказ
     need_delivery = models.BooleanField(verbose_name='Необходима доставка')
-    discount = models.ForeignKey(Discount, verbose_name='Скидка', on_delete=models.SET_NULL, null=True)
+    discount = models.ForeignKey(Discount, verbose_name='Скидка', on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=70, verbose_name='Имя')
     phone = models.CharField(max_length=70, verbose_name='Телефон')
     email = models.EmailField()
@@ -100,7 +101,7 @@ class Order(models.Model): #Заказ
 class OrderLine(models.Model):
     order = models.ForeignKey(Order, verbose_name = 'Заказ', on_delete = models.CASCADE)  #models.CASCADE() - удаляет все связанные объектыс ним
     product = models.ForeignKey(Product, verbose_name = 'Товар', on_delete = models.SET_NULL, null = True) #можно удалять из списка один заказ
-    price = models.ForeignKey(max_length = 10, decimal_places = 2, verbose_name = 'Цена', default = 0) #цена за единицу товара
+    price = models.DecimalField(max_digits = 10, decimal_places = 2, verbose_name = 'Цена', default = 0) #цена за единицу товара)
     count = models.IntegerField(verbose_name = 'Количество', validators = [MinValueValidator(1)], default = 1) #кол-во товара
 
     class Meta:
